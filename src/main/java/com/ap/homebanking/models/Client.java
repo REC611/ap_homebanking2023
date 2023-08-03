@@ -26,6 +26,8 @@ public class Client {
         this.lastName= last;
         this.email= email;
     }
+
+    //Utilizo getters and setters
     public String getFirstName(){
         return firstName;
     }

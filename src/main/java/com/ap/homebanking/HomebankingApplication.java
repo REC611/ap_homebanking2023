@@ -24,22 +24,22 @@ public class HomebankingApplication {
 			Client client01= new Client("Melba", "Morel", "melba@mindhub.com");
 			clientRepository.save(client01);
 
-			Account account01 = new Account("VIN001", LocalDate.now(), 100000);
+			Account account01 = new Account("ABK001", LocalDate.now(), 100000);
 			client01.addAccounts(account01);
 			accountRepository.save(account01);
 
-			Account account02 = new Account("VIN002", LocalDate.now().plusDays(1), 3500);
+			Account account02 = new Account("ABK002", LocalDate.now().plusDays(1), 3500);
 			client01.addAccounts(account02);
 			accountRepository.save(account02);
 
 			Client client02 = new Client("Julian F.", "Puebla Badano", "ejemplo@ejemplo");
 			clientRepository.save(client02);
 
-			Account account03 = new Account("VIN001", LocalDate.now(), 11000);
+			Account account03 = new Account("ABK001", LocalDate.now(), 11000);
 			client02.addAccounts(account03);
 			accountRepository.save(account03);
 
-			Account account04 = new Account("VIN002", LocalDate.now().plusDays(1), 7000);
+			Account account04 = new Account("ABK002", LocalDate.now().plusDays(1), 7000);
 			client02.addAccounts(account04);
 			accountRepository.save(account04);
 		});

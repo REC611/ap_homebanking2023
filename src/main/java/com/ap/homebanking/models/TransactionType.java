@@ -1,2 +1,5 @@
-package com.ap.homebanking.models;public class TransactionType {
+package com.ap.homebanking.models;
+
+public enum TransactionType {
+    CREDIT, DEBIT
 }

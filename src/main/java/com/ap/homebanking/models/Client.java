@@ -26,6 +26,11 @@ public class Client {
         account.setClient(this);
         accounts.add(account);
     }
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+    Set<ClientLoan> loans = new HashSet<>();
+    public Set<ClientLoan> getLoans(){
+        return loans;
+    }
 
     public Client() {}
 

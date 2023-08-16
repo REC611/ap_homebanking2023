@@ -14,7 +14,7 @@ public class Transaction {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "accoount_id")
+    @JoinColumn(name = "account_id")
     private Account account;
     private TransactionType type;
     private double amount;

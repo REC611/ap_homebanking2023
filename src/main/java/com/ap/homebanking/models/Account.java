@@ -14,7 +14,8 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy =  "native")
     private Long id;
-
+    @OneToMany(mappedBy =  "account", fetch = FetchType.EAGER)
+    private Set<Transaction> transactions = new HashSet<>();
     @JoinColumn(name = "client_id")
     @ManyToOne(fetch = FetchType.EAGER)
     private Client client;
@@ -23,8 +24,6 @@ public class Account {
     private LocalDate creationDate;
     private double balance;
 
-    @OneToMany(mappedBy =  "account", fetch = FetchType.EAGER)
-    private Set<Transaction> transactions = new HashSet<>();
     public Set<Transaction> getTransactions(){
         return transactions;
     }

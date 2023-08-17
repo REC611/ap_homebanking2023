@@ -21,7 +21,7 @@ public class HomebankingApplication {
 	}
 
 	@Bean
-	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository){
+	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository, CardRepository cardRepository){
 		return (args -> {
 			Client client01= new Client("Melba", "Morel", "melba@mindhub.com");
 			clientRepository.save(client01);
@@ -77,6 +77,23 @@ public class HomebankingApplication {
 			ClientLoan clientLoan04 = new ClientLoan(90000.0, 18, client02 ,loan03);
 			clientLoanRepository.save(clientLoan04);
 
+			Card card01 = new Card((client01.getFirstName() + " " + client01.getLastName()),
+					CardTypes.DEBIT, CardColors.TITANIUM, "3496667569656449", 611,
+					LocalDate.now(), LocalDate.now().plusDays(1730));
+			client01.addCards(card01);
+			cardRepository.save(card01);
+
+			Card card02 = new Card((client01.getFirstName() + " " + client01.getLastName()),
+					CardTypes.CREDIT, CardColors.TITANIUM, "3496582347883523", 311,
+					LocalDate.now(), LocalDate.now().plusDays(1830));
+			client01.addCards(card02);
+			cardRepository.save(card02);
+
+			Card card03 = new Card((client02.getFirstName() + " " + client02.getLastName()),
+					CardTypes.CREDIT, CardColors.SILVER, "3496378867539992", 811,
+					LocalDate.now(), LocalDate.now().plusDays(1825));
+			client02.addCards(card03);
+			cardRepository.save(card03);
 		});
 	}
 }

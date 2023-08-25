@@ -2,10 +2,12 @@ package com.ap.homebanking;
 
 import com.ap.homebanking.models.*;
 import com.ap.homebanking.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,6 +18,9 @@ import static com.ap.homebanking.models.TransactionType.CREDIT;
 @SpringBootApplication
 public class HomebankingApplication {
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	public static void main(String[] args) {
 		SpringApplication.run(HomebankingApplication.class, args);
 	}
@@ -23,7 +28,7 @@ public class HomebankingApplication {
 	@Bean
 	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository, CardRepository cardRepository){
 		return (args -> {
-			Client client01= new Client("Melba", "Morel", "melba@mindhub.com");
+			Client client01= new Client("Melba", "Morel", "melba@mindhub.com", passwordEncoder.encode("melba"));
 			clientRepository.save(client01);
 
 			Account account01 = new Account("ABK001", LocalDate.now(), 100000);
@@ -34,8 +39,11 @@ public class HomebankingApplication {
 			client01.addAccounts(account02);
 			accountRepository.save(account02);
 
-			Client client02 = new Client("Julian F.", "Puebla Badano", "ejemplo@ejemplo");
+			Client client02 = new Client("Julian F.", "Puebla Badano", "ejemplo@ejemplo", passwordEncoder.encode("pass"));
 			clientRepository.save(client02);
+
+			Client client03 = new Client("Administrador", "HomeBanking", "admin@admin", passwordEncoder.encode("admin"));
+			clientRepository.save(client03);
 
 			Account account03 = new Account("ABK003", LocalDate.now(), 11000);
 			client02.addAccounts(account03);

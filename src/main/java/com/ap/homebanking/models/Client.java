@@ -38,6 +38,10 @@ public class Client {
         card.setClient(this);
         cards.add(card);
     }
+    public void addClientLoan(ClientLoan clientLoan){
+        clientLoan.setClient(this);
+        loans.add(clientLoan);
+    }
     //Utilizo getters and setters
     public Long getId(){
         return id;

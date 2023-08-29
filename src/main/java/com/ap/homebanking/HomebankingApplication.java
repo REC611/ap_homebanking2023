@@ -31,11 +31,13 @@ public class HomebankingApplication {
 			Client client01= new Client("Melba", "Morel", "melba@mindhub.com", passwordEncoder.encode("melba"));
 			clientRepository.save(client01);
 
-			Account account01 = new Account("ABK001", LocalDate.now(), 100000);
+			Account account01 = new Account("ABK-" + ((int)(Math.random() * 99999999 + 1)),
+					LocalDate.now(), 100000);
 			client01.addAccounts(account01);
 			accountRepository.save(account01);
 
-			Account account02 = new Account("ABK002", LocalDate.now().plusDays(1), 3500);
+			Account account02 = new Account("ABK-" + ((int)(Math.random() * 99999999 + 1)),
+					LocalDate.now().plusDays(1), 3500);
 			client01.addAccounts(account02);
 			accountRepository.save(account02);
 
@@ -44,14 +46,6 @@ public class HomebankingApplication {
 
 			Client client03 = new Client("Administrador", "HomeBanking", "admin@admin", passwordEncoder.encode("admin"));
 			clientRepository.save(client03);
-
-			Account account03 = new Account("ABK003", LocalDate.now(), 11000);
-			client02.addAccounts(account03);
-			accountRepository.save(account03);
-
-			Account account04 = new Account("ABK004", LocalDate.now().plusDays(1), 7000);
-			client02.addAccounts(account04);
-			accountRepository.save(account04);
 
 			Transaction transaction01 = new Transaction(TransactionType.CREDIT,9500, "Transfer made from own account", LocalDateTime.now());
 			account01.addTransaction(transaction01);
@@ -75,31 +69,41 @@ public class HomebankingApplication {
 			loanRepository.save(loan03);
 
 
-			ClientLoan clientLoan01 = new ClientLoan( 100000.0, 60, client01, loan01);
+			ClientLoan clientLoan01 = new ClientLoan( 100000.0, 60);
+			client01.addClientLoan(clientLoan01);
+			loan01.addClientLoan(clientLoan01);
 			clientLoanRepository.save(clientLoan01);
-			ClientLoan clientLoan02 = new ClientLoan(57500.0, 12, client01, loan02);
+
+			ClientLoan clientLoan02 = new ClientLoan(57500.0, 12);
+			client02.addClientLoan(clientLoan02);
+			loan01.addClientLoan(clientLoan02);
 			clientLoanRepository.save(clientLoan02);
 
-			ClientLoan clientLoan03 = new ClientLoan(300000.0, 48, client02, loan02);
+			ClientLoan clientLoan03 = new ClientLoan(300000.0, 48);
+			client01.addClientLoan(clientLoan03);
+			loan02.addClientLoan(clientLoan03);
 			clientLoanRepository.save(clientLoan03);
-			ClientLoan clientLoan04 = new ClientLoan(90000.0, 18, client02 ,loan03);
+
+			ClientLoan clientLoan04 = new ClientLoan(90000.0, 18);
+			client02.addClientLoan(clientLoan04);
+			loan03.addClientLoan(clientLoan04);
 			clientLoanRepository.save(clientLoan04);
 
 			Card card01 = new Card((client01.getFirstName() + " " + client01.getLastName()),
-					CardTypes.DEBIT, CardColors.TITANIUM, "3496667569656449", 611,
-					LocalDate.now(), LocalDate.now().plusDays(1730));
+					CardTypes.DEBIT, CardColors.TITANIUM,((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1)) + "-" +
+					((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1)),(int)(Math.random() * 999 + 1),LocalDate.now(), LocalDate.now().plusYears(5));
 			client01.addCards(card01);
 			cardRepository.save(card01);
 
 			Card card02 = new Card((client01.getFirstName() + " " + client01.getLastName()),
-					CardTypes.CREDIT, CardColors.TITANIUM, "3496582347883523", 311,
-					LocalDate.now(), LocalDate.now().plusDays(1830));
+					CardTypes.CREDIT, CardColors.TITANIUM,((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1)) + "-" +
+					((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1)),(int)(Math.random() * 999 + 1),LocalDate.now(), LocalDate.now().plusYears(5));
 			client01.addCards(card02);
 			cardRepository.save(card02);
 
 			Card card03 = new Card((client02.getFirstName() + " " + client02.getLastName()),
-					CardTypes.CREDIT, CardColors.SILVER, "3496378867539992", 811,
-					LocalDate.now(), LocalDate.now().plusDays(1825));
+					CardTypes.CREDIT, CardColors.SILVER, ((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1)) + "-" +
+					((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1)),(int)(Math.random() * 999 + 1),LocalDate.now(), LocalDate.now().plusYears(5));
 			client02.addCards(card03);
 			cardRepository.save(card03);
 		});

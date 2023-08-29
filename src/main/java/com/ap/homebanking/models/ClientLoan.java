@@ -16,18 +16,15 @@ public class ClientLoan {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
     private Client client;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "loan_id")
     private Loan loan;
 
     public ClientLoan() {
     }
-    public ClientLoan(Double amount, int payments, Client client, Loan loan) {
+    public ClientLoan(Double amount, int payments) {
         this.amount = amount;
         this.payments = payments;
-        this.client = client;
-        this.loan = loan;
     }
 
     public Long getId() {

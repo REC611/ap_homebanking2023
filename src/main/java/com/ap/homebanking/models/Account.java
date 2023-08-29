@@ -24,9 +24,7 @@ public class Account {
     private LocalDate creationDate;
     private double balance;
 
-    public Set<Transaction> getTransactions(){
-        return transactions;
-    }
+
     public void addTransaction(Transaction transaction){
         transaction.setAccount(this);
         transactions.add(transaction);
@@ -65,5 +63,8 @@ public class Account {
     }
     public void setClient(Client client) {
         this.client = client;
+    }
+    public Set<Transaction> getTransactions(){
+        return transactions;
     }
 }

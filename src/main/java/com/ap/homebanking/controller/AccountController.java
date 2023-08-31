@@ -32,6 +32,10 @@ public class AccountController {
 
         if (client.getAccounts().size() < 3 ){
             Account account = new Account("ABK-" + ((int)(Math.random() * 99999999 + 1)), LocalDate.now(), 0);
+
+            while ( accountRepository.findByNumber(account.getNumber()) != null){
+                account.setNumber("ABK-" + ((int)(Math.random()*99999999+1)));
+            }
             client.addAccounts(account);
             accountRepository.save(account);
             return new ResponseEntity<>(HttpStatus.CREATED);

@@ -30,6 +30,9 @@ public class CardController {
     @RequestMapping(value = "/clients/current/cards", method = RequestMethod.POST)
     public ResponseEntity<Object> createCard(@RequestParam CardTypes cardTypes, @RequestParam CardColors cardColors, Authentication authentication){
         Client client = clientRepository.findByEmail(authentication.getName());
+        if (cardTypes == null || cardColors == null){
+            return new ResponseEntity<>("Seleccione el tipo y color de su nueva tarjeta", HttpStatus.FORBIDDEN);
+        }
         if ( client.getCards()
                 .stream().filter(card -> card.getType().equals(cardTypes))
                 .collect(Collectors.toList()).size() < 3 ){
@@ -39,7 +42,12 @@ public class CardController {
                     ((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1)) + "-" +
                             ((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1)),
                     (int)(Math.random() * 999 + 1), LocalDate.now(), LocalDate.now().plusYears(5));
-
+            while (cardRepository.findByNumber(card.getNumber()) != null){
+                card.setNumber(
+                        ((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1)) + "-" +
+                                ((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1))
+                );
+            }
             client.addCards(card);
             cardRepository.save(card);
             return new ResponseEntity<>(HttpStatus.CREATED);

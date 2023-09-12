@@ -41,6 +41,7 @@ public class HomebankingApplication {
 	@Bean
 	public CommandLineRunner initData(){
 		return (args -> {
+			/*
 			Client client01= new Client("Melba", "Morel", "melba@mindhub.com", passwordEncoder.encode("melba"));
 			serviceClient.save(client01);
 
@@ -119,6 +120,8 @@ public class HomebankingApplication {
 					((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1)),(int)(Math.random() * 999 + 1),LocalDate.now(), LocalDate.now().plusYears(5));
 			client02.addCards(card03);
 			serviceCard.save(card03);
+
+			 */
 		});
 	}
 }

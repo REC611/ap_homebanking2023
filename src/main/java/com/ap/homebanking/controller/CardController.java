@@ -33,7 +33,7 @@ public class CardController {
     public ResponseEntity<Object> createCard(@RequestParam CardTypes cardTypes, @RequestParam CardColors cardColors, Authentication authentication){
         Client client = serviceClient.findByEmail(authentication.getName());
         if (cardTypes == null || cardColors == null){
-            return new ResponseEntity<>("Seleccione el tipo y color de su nueva tarjeta", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("\n" + "Select the type and color of your new card", HttpStatus.FORBIDDEN);
         }
         if ( client.getCards()
                 .stream().filter(card -> card.getType().equals(cardTypes))
@@ -54,7 +54,7 @@ public class CardController {
             serviceCard.save(card);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } else {
-            return new ResponseEntity<>("Solamente se pueden generar 3 tarjetas de cada tipo", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Only 3 cards of each type can be generated", HttpStatus.FORBIDDEN);
         }
     }
     @RequestMapping(value = "client/current/cards")

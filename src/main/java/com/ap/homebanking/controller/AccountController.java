@@ -39,7 +39,7 @@ public class AccountController {
             serviceAccount.save(account);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } else {
-            return new ResponseEntity<>("Solamente se pueden generar 3 cuentas por cliente", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Only 3 accounts can be generated per client", HttpStatus.FORBIDDEN);
         }
     }
     @RequestMapping(value = "/clients/current/accounts")

@@ -36,39 +36,39 @@ public class LoanController {
 
         if (dtoLoanApplication.getLoanId() == null || dtoLoanApplication.getAmount() == null ||
                 dtoLoanApplication.getPayments() == null || dtoLoanApplication.getToAccountNumber() == null){
-            return new ResponseEntity<>("Los datos ingresados no son válidos", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("The data entered is not valid", HttpStatus.FORBIDDEN);
         }
         if (dtoLoanApplication.getAmount() == 0){
-            return new ResponseEntity<>("El monto solicitado no puede ser 0", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("The requested amount cannot be 0", HttpStatus.FORBIDDEN);
         }
         if (dtoLoanApplication.getPayments() == 0){
-            return new ResponseEntity<>("Las cuotas seleccionadas no pueden ser 0", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("The selected quotas cannot be 0", HttpStatus.FORBIDDEN);
         }
 
         Loan loan = serviceLoan.findById(dtoLoanApplication.getLoanId());
 
         if (loan == null){
-            return new ResponseEntity<>("El prestamo solicitado no existe", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("The requested loan does not exist", HttpStatus.FORBIDDEN);
         }
 
         if (dtoLoanApplication.getAmount() > loan.getMaxAmount()){
-            return new ResponseEntity<>("El monto solicitado supera el máximo permitido para el tipo de préstamo", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("The requested amount exceeds the maximum allowed for the type of loan", HttpStatus.FORBIDDEN);
         }
 
         if (!loan.getPayments().contains(dtoLoanApplication.getPayments())){
-            return new ResponseEntity<>("La cantidad de cuotas solicitada no está disponible par el tipo de préstamo", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("The requested amount of installments is not available for the type of loan", HttpStatus.FORBIDDEN);
         }
 
         Account toAccount = serviceAccount.findByNumber(dtoLoanApplication.getToAccountNumber());
 
         if (toAccount == null){
-            return new ResponseEntity<>("La cuenta de destino no existe", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("The destination account does not exist", HttpStatus.FORBIDDEN);
         }
 
         Client client = serviceClient.findByEmail(authentication.getName());
 
         if (!client.getAccounts().contains(toAccount)){
-            return new ResponseEntity<>("La cuenta destino no pertenece al cliente", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("The destination account does not belong to the client", HttpStatus.FORBIDDEN);
         }
 
         Double loanAmount = dtoLoanApplication.getAmount() + (dtoLoanApplication.getAmount() * 0.2);

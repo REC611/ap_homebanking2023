@@ -7,6 +7,8 @@ import com.ap.homebanking.models.CardTypes;
 import com.ap.homebanking.models.Client;
 import com.ap.homebanking.repository.CardRepository;
 import com.ap.homebanking.repository.ClientRepository;
+import com.ap.homebanking.services.ServiceCard;
+import com.ap.homebanking.services.ServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +26,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class CardController {
     @Autowired
-    ClientRepository clientRepository;
+    ServiceClient serviceClient;
     @Autowired
-    CardRepository cardRepository;
+    ServiceCard serviceCard;
     @RequestMapping(value = "/clients/current/cards", method = RequestMethod.POST)
     public ResponseEntity<Object> createCard(@RequestParam CardTypes cardTypes, @RequestParam CardColors cardColors, Authentication authentication){
-        Client client = clientRepository.findByEmail(authentication.getName());
+        Client client = serviceClient.findByEmail(authentication.getName());
         if (cardTypes == null || cardColors == null){
             return new ResponseEntity<>("Seleccione el tipo y color de su nueva tarjeta", HttpStatus.FORBIDDEN);
         }
@@ -42,14 +44,14 @@ public class CardController {
                     ((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1)) + "-" +
                             ((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1)),
                     (int)(Math.random() * 999 + 1), LocalDate.now(), LocalDate.now().plusYears(5));
-            while (cardRepository.findByNumber(card.getNumber()) != null){
+            while (serviceCard.findByNumber(card.getNumber()) != null){
                 card.setNumber(
                         ((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1)) + "-" +
                                 ((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1))
                 );
             }
             client.addCards(card);
-            cardRepository.save(card);
+            serviceCard.save(card);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>("Solamente se pueden generar 3 tarjetas de cada tipo", HttpStatus.FORBIDDEN);
@@ -57,7 +59,7 @@ public class CardController {
     }
     @RequestMapping(value = "client/current/cards")
     public List<DtoCard> readCards (Authentication authentication){
-        Client client= clientRepository.findByEmail(authentication.getName());
-        return cardRepository.findByClient(client).stream().map(card -> new DtoCard(card)).collect(Collectors.toList());
+        Client client= serviceClient.findByEmail(authentication.getName());
+        return serviceCard.findByClientToCardDTO(client);
     }
 }

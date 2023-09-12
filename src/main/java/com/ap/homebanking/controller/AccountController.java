@@ -3,8 +3,8 @@ package com.ap.homebanking.controller;
 import com.ap.homebanking.dto.DtoAccount;
 import com.ap.homebanking.models.Account;
 import com.ap.homebanking.models.Client;
-import com.ap.homebanking.repository.AccountRepository;
-import com.ap.homebanking.repository.ClientRepository;
+import com.ap.homebanking.services.ServiceAccount;
+import com.ap.homebanking.services.ServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,28 +16,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
 public class AccountController {
     @Autowired
-    private AccountRepository accountRepository;
+    private ServiceAccount serviceAccount;
     @Autowired
-    private ClientRepository clientRepository;
+    private ServiceClient serviceClient;
     @RequestMapping(value = "/clients/current/accounts", method = RequestMethod.POST)
     public ResponseEntity<Object> createAccount(Authentication authentication){
 
-        Client client = clientRepository.findByEmail(authentication.getName());
+        Client client = serviceClient.findByEmail(authentication.getName());
 
         if (client.getAccounts().size() < 3 ){
-            Account account = new Account("ABK-" + ((int)(Math.random() * 99999999 + 1)), LocalDate.now(), 0);
+            Account account = new Account("ABK-" + ((int)(Math.random() * 99999999 + 1)), LocalDate.now(), 0.0);
 
-            while ( accountRepository.findByNumber(account.getNumber()) != null){
+            while ( serviceAccount.findByNumber(account.getNumber()) != null){
                 account.setNumber("ABK-" + ((int)(Math.random()*99999999+1)));
             }
             client.addAccounts(account);
-            accountRepository.save(account);
+            serviceAccount.save(account);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>("Solamente se pueden generar 3 cuentas por cliente", HttpStatus.FORBIDDEN);
@@ -45,17 +44,17 @@ public class AccountController {
     }
     @RequestMapping(value = "/clients/current/accounts")
     public List<DtoAccount> readAccounts(Authentication authentication){
-        Client client = clientRepository.findByEmail(authentication.getName());
-        return accountRepository.findByClient(client)
-                .stream().map(account -> new DtoAccount(account))
-                .collect(Collectors.toList());
+        Client client = serviceClient.findByEmail(authentication.getName());
+        return serviceAccount.findByClientToListAccountDTO(client);
     }
+    /*
     @RequestMapping("/account")
     public List<DtoAccount> getAccounts(){
-        return accountRepository.findAll().stream().map(account -> new DtoAccount(account)).collect(Collectors.toList());
+        return serviceAccount.findAll().stream().map(account -> new DtoAccount(account)).collect(Collectors.toList());
     }
+    */
     @RequestMapping("/accounts/{id}")
-    public DtoAccount getAccount(@PathVariable Long id){
-        return accountRepository.findById(id).map(account -> new DtoAccount(account)).orElse(null);
+    public DtoAccount readAccount(@PathVariable Long id){
+        return serviceAccount.findByIdToAccountDTO(id);
     }
 }

@@ -3,6 +3,7 @@ package com.ap.homebanking.controller;
 import com.ap.homebanking.dto.DtoClient;
 import com.ap.homebanking.models.Account;
 import com.ap.homebanking.models.Client;
+import com.ap.homebanking.models.RoleType;
 import com.ap.homebanking.repository.ClientRepository;
 import com.ap.homebanking.repository.AccountRepository;
 import com.ap.homebanking.services.ServiceAccount;
@@ -29,9 +30,9 @@ public class ClientController {
     private ServiceClient serviceClient;
     @Autowired
     private ServiceAccount serviceAccount;
-    @RequestMapping(value = "/clients", method = RequestMethod.POST)
+    @PostMapping(value = "/clients")
     public ResponseEntity<Object> register(@RequestParam String firstName, @RequestParam String lastName,
-                                           @RequestParam String email, @RequestParam String password) {
+                                           @RequestParam String email, @RequestParam String password ) {
 
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
             return new ResponseEntity<>("Missing data", HttpStatus.FORBIDDEN);
@@ -40,7 +41,7 @@ public class ClientController {
             return new ResponseEntity<>("Name already in use", HttpStatus.FORBIDDEN);
         }
 
-        Client client = new Client(firstName, lastName, email, passwordEncoder.encode(password));
+        Client client = new Client(firstName, lastName, email, passwordEncoder.encode(password), RoleType.CLIENT);
         serviceClient.save(client);
 
         Account account = new Account("ABK-" + ((int)(Math.random() * 99999999 + 1)), LocalDate.now(), 0.0);
@@ -50,12 +51,12 @@ public class ClientController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @RequestMapping("/clients/current")
+    @GetMapping("/clients/current")
     public DtoClient getCurrent(Authentication authentication){
         return serviceClient.findByEmailToClientDTO(authentication.getName());
     }
 
-    @RequestMapping("/clients")
+    @GetMapping("/clients")
     public List<DtoClient> getClients(){
         return serviceClient.findAllToListClientDTO();
     }

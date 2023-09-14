@@ -18,7 +18,7 @@ import static com.ap.homebanking.models.TransactionType.CREDIT;
 
 @SpringBootApplication
 public class HomebankingApplication {
-
+/*
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	@Autowired
@@ -33,6 +33,8 @@ public class HomebankingApplication {
 	private ServiceCard serviceCard;
 	@Autowired
 	private ServiceClientLoan serviceClientLoan;
+	*/
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(HomebankingApplication.class, args);

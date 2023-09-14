@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,7 +21,7 @@ public class AccountController {
     private ServiceAccount serviceAccount;
     @Autowired
     private ServiceClient serviceClient;
-    @RequestMapping(value = "/clients/current/accounts", method = RequestMethod.POST)
+    @PostMapping(value = "/clients/current/accounts")
     public ResponseEntity<Object> createAccount(Authentication authentication){
 
         Client client = serviceClient.findByEmail(authentication.getName());
@@ -42,7 +39,7 @@ public class AccountController {
             return new ResponseEntity<>("Only 3 accounts can be generated per client", HttpStatus.FORBIDDEN);
         }
     }
-    @RequestMapping(value = "/clients/current/accounts")
+    @GetMapping(value = "/clients/current/accounts")
     public List<DtoAccount> readAccounts(Authentication authentication){
         Client client = serviceClient.findByEmail(authentication.getName());
         return serviceAccount.findByClientToListAccountDTO(client);
@@ -53,7 +50,7 @@ public class AccountController {
         return serviceAccount.findAll().stream().map(account -> new DtoAccount(account)).collect(Collectors.toList());
     }
     */
-    @RequestMapping("/accounts/{id}")
+    @GetMapping("/accounts/{id}")
     public DtoAccount readAccount(@PathVariable Long id){
         return serviceAccount.findByIdToAccountDTO(id);
     }

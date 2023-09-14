@@ -14,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import javax.transaction.Transactional;
@@ -33,7 +30,7 @@ public class TransactionController {
     @Autowired
     ServiceTransaction serviceTransaction;
     @Transactional
-    @RequestMapping(value = "/transactions", method = RequestMethod.POST)
+    @PostMapping(value = "/transactions")
     public ResponseEntity<Object> createTransactions(@RequestParam String fromAccountNumber, @RequestParam String toAccountNumber, @RequestParam Double amount, @RequestParam String description, Authentication authentication) {
 
         if (fromAccountNumber.isEmpty() || toAccountNumber.isEmpty() || amount.isNaN() || description.isEmpty()) {

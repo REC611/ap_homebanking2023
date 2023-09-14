@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,7 +26,7 @@ public class CardController {
     ServiceClient serviceClient;
     @Autowired
     ServiceCard serviceCard;
-    @RequestMapping(value = "/clients/current/cards", method = RequestMethod.POST)
+    @PostMapping(value = "/clients/current/cards")
     public ResponseEntity<Object> createCard(@RequestParam CardTypes cardTypes, @RequestParam CardColors cardColors, Authentication authentication){
         Client client = serviceClient.findByEmail(authentication.getName());
         if (cardTypes == null || cardColors == null){
@@ -57,7 +54,7 @@ public class CardController {
             return new ResponseEntity<>("Only 3 cards of each type can be generated", HttpStatus.FORBIDDEN);
         }
     }
-    @RequestMapping(value = "client/current/cards")
+    @GetMapping(value = "client/current/cards")
     public List<DtoCard> readCards (Authentication authentication){
         Client client= serviceClient.findByEmail(authentication.getName());
         return serviceCard.findByClientToCardDTO(client);

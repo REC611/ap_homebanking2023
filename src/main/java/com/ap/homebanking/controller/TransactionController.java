@@ -56,14 +56,14 @@ public class TransactionController {
         }
 
         Transaction debit = new Transaction(TransactionType.DEBIT, amount * -1, description + " " + fromAccount.getNumber() ,
-                LocalDateTime.now());
+                LocalDateTime.now(), fromAccount.getBalance() - amount);
         fromAccount.addTransaction(debit);
         serviceTransaction.save(debit);
         fromAccount.setBalance(fromAccount.getBalance() - amount);
         serviceAccount.save(fromAccount);
 
         Transaction credit = new Transaction(TransactionType.CREDIT, amount, description + " " + toAccount.getNumber(),
-                LocalDateTime.now());
+                LocalDateTime.now(), toAccount.getBalance() + amount);
         toAccount.addTransaction(credit);
         serviceTransaction.save(credit);
         toAccount.setBalance(toAccount.getBalance() + amount);

@@ -29,4 +29,12 @@ public class ServiceCardImplement implements ServiceCard {
                 .stream().map(card -> new DtoCard(card))
                 .collect(Collectors.toList());
     }
+    @Override
+    public Card findById(Long id) {
+        return cardRepository.findById(id).orElse(null);
+    }
+    @Override
+    public void deleteCard(Long id) {
+        cardRepository.deleteById(id);
+    }
 }

@@ -3,9 +3,6 @@ package com.ap.homebanking.controller;
 import com.ap.homebanking.dto.DtoClient;
 import com.ap.homebanking.models.Account;
 import com.ap.homebanking.models.Client;
-import com.ap.homebanking.models.RoleType;
-import com.ap.homebanking.repository.ClientRepository;
-import com.ap.homebanking.repository.AccountRepository;
 import com.ap.homebanking.services.ServiceAccount;
 import com.ap.homebanking.services.ServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -41,7 +36,7 @@ public class ClientController {
             return new ResponseEntity<>("Name already in use", HttpStatus.FORBIDDEN);
         }
 
-        Client client = new Client(firstName, lastName, email, passwordEncoder.encode(password), RoleType.CLIENT);
+        Client client = new Client(firstName, lastName, email, passwordEncoder.encode(password));
         serviceClient.save(client);
 
         Account account = new Account("ABK-" + ((int)(Math.random() * 99999999 + 1)), LocalDate.now(), 0.0);

@@ -10,4 +10,7 @@ public interface ServiceCard {
     void save(Card card);
     Card findByNumber(String number);
     List<DtoCard> findByClientToCardDTO(Client client);
+    Card findById(Long id);
+
+    void deleteCard(Long id);
 }

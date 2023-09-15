@@ -20,6 +20,10 @@ public class ServiceAccountImplement implements ServiceAccount {
         accountRepository.save(account);
     }
     @Override
+    public Account findById(Long id) {
+        return accountRepository.findById(id).orElse(null);
+    }
+    @Override
     public Account findByNumber(String number) {
         return accountRepository.findByNumber(number);
     }
@@ -34,5 +38,9 @@ public class ServiceAccountImplement implements ServiceAccount {
         return accountRepository.findByClient(client).stream()
                 .map(account -> new DtoAccount(account))
                 .collect(Collectors.toList());
+    }
+    @Override
+    public void deleteById(Long id) {
+        accountRepository.deleteById(id);
     }
 }

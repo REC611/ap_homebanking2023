@@ -8,7 +8,9 @@ import java.util.List;
 
 public interface ServiceAccount {
      void save(Account account);
+     Account findById(Long id);
      Account findByNumber(String number);
      DtoAccount findByIdToAccountDTO(Long id);
      List<DtoAccount> findByClientToListAccountDTO(Client client);
+     void deleteById(Long id);
 }

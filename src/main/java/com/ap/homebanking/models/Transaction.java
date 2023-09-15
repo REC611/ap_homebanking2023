@@ -20,13 +20,15 @@ public class Transaction {
     private double amount;
     private String description;
     private LocalDateTime date;
+    private double currentBalance;
     public Transaction(){
     }
-    public Transaction(TransactionType type, double amount, String description, LocalDateTime date){
+    public Transaction(TransactionType type, double amount, String description, LocalDateTime date, double currentBalance){
         this.type = type;
         this.amount=amount;
         this.description=description;
         this.date=date;
+        this.currentBalance = currentBalance;
 
     }
     public Long getId() {
@@ -62,5 +64,10 @@ public class Transaction {
     public void setDate(LocalDateTime date) {
         this.date = date;
     }
-
+    public double getCurrentBalance() {
+        return currentBalance;
+    }
+    public void setCurrentBalance(double currentBalance) {
+        this.currentBalance = currentBalance;
+    }
 }

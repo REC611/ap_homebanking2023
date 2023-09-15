@@ -3,8 +3,10 @@ package com.ap.homebanking.controller;
 import com.ap.homebanking.dto.DtoAccount;
 import com.ap.homebanking.models.Account;
 import com.ap.homebanking.models.Client;
+import com.ap.homebanking.models.Transaction;
 import com.ap.homebanking.services.ServiceAccount;
 import com.ap.homebanking.services.ServiceClient;
+import com.ap.homebanking.services.ServiceTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,8 @@ public class AccountController {
     private ServiceAccount serviceAccount;
     @Autowired
     private ServiceClient serviceClient;
+    @Autowired
+    private ServiceTransaction serviceTransaction;
     @PostMapping(value = "/clients/current/accounts")
     public ResponseEntity<Object> createAccount(Authentication authentication){
 
@@ -53,5 +57,21 @@ public class AccountController {
     @GetMapping("/accounts/{id}")
     public DtoAccount readAccount(@PathVariable Long id){
         return serviceAccount.findByIdToAccountDTO(id);
+    }
+    @DeleteMapping("/accounts/{id}")
+    public ResponseEntity<Object> deleteAccount(@PathVariable Long id){
+        Account account = serviceAccount.findById(id);
+        if ( account != null){
+            List<Transaction> transactions = serviceTransaction.findAllByAccount(account);
+            if (transactions != null){
+                for (Transaction transaction : transactions ) {
+                    serviceTransaction.deleteById(transaction.getId());
+                }
+            }
+            serviceAccount.deleteById(account.getId());
+            return new ResponseEntity<>(HttpStatus.PROCESSING);
+        } else {
+            return new ResponseEntity<>("The account you want to delete does not exist", HttpStatus.FORBIDDEN);
+        }
     }
 }

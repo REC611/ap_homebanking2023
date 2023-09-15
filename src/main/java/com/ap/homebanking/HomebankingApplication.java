@@ -1,6 +1,7 @@
 package com.ap.homebanking;
 
 import com.ap.homebanking.models.*;
+import com.ap.homebanking.utils.CardUtils;
 import com.ap.homebanking.repository.*;
 import com.ap.homebanking.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static com.ap.homebanking.models.TransactionType.CREDIT;
 
 @SpringBootApplication
 public class HomebankingApplication {
@@ -33,8 +32,8 @@ public class HomebankingApplication {
 	private ServiceCard serviceCard;
 	@Autowired
 	private ServiceClientLoan serviceClientLoan;
-	*/
 
+*/
 
 	public static void main(String[] args) {
 		SpringApplication.run(HomebankingApplication.class, args);
@@ -43,7 +42,7 @@ public class HomebankingApplication {
 	@Bean
 	public CommandLineRunner initData(){
 		return (args -> {
-			/*
+/*
 			Client client01= new Client("Melba", "Morel", "melba@mindhub.com", passwordEncoder.encode("melba"));
 			serviceClient.save(client01);
 
@@ -63,15 +62,15 @@ public class HomebankingApplication {
 			Client client03 = new Client("Administrador", "HomeBanking", "admin@admin", passwordEncoder.encode("admin"));
 			serviceClient.save(client03);
 
-			Transaction transaction01 = new Transaction(TransactionType.CREDIT,9500, "Transfer made from own account", LocalDateTime.now());
+			Transaction transaction01 = new Transaction(TransactionType.CREDIT,9500, "Transfer made from own account", LocalDateTime.now(), account01.getBalance());
 			account01.addTransaction(transaction01);
 			serviceTransaction.save(transaction01);
 
-			Transaction transaction02 = new Transaction(TransactionType.DEBIT,500, "Shopping Pay", LocalDateTime.now());
+			Transaction transaction02 = new Transaction(TransactionType.DEBIT,500, "Shopping Pay", LocalDateTime.now(), account01.getBalance());;
 			account01.addTransaction(transaction02);
 			serviceTransaction.save(transaction02);
 
-			Transaction transaction03 = new Transaction(TransactionType.CREDIT,1500, "Transfer made from American Bank", LocalDateTime.now());
+			Transaction transaction03 = new Transaction(TransactionType.CREDIT,1500, "Transfer made from American Bank", LocalDateTime.now(), account01.getBalance());;
 			account01.addTransaction(transaction03);
 			serviceTransaction.save(transaction03);
 
@@ -106,24 +105,21 @@ public class HomebankingApplication {
 			serviceClientLoan.save(clientLoan04);
 
 			Card card01 = new Card((client01.getFirstName() + " " + client01.getLastName()),
-					CardTypes.DEBIT, CardColors.TITANIUM,((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1)) + "-" +
-					((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1)),(int)(Math.random() * 999 + 1),LocalDate.now(), LocalDate.now().plusYears(5));
+					CardTypes.DEBIT, CardColors.TITANIUM,CardUtils.getCardNumber(), CardUtils.getCardCvv(), LocalDate.now(), LocalDate.now().plusYears(-5));
 			client01.addCards(card01);
 			serviceCard.save(card01);
 
 			Card card02 = new Card((client01.getFirstName() + " " + client01.getLastName()),
-					CardTypes.CREDIT, CardColors.TITANIUM,((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1)) + "-" +
-					((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1)),(int)(Math.random() * 999 + 1),LocalDate.now(), LocalDate.now().plusYears(5));
+					CardTypes.CREDIT, CardColors.TITANIUM, CardUtils.getCardNumber(), CardUtils.getCardCvv(), LocalDate.now(), LocalDate.now().plusYears(5));
 			client01.addCards(card02);
 			serviceCard.save(card02);
 
 			Card card03 = new Card((client02.getFirstName() + " " + client02.getLastName()),
-					CardTypes.CREDIT, CardColors.SILVER, ((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1)) + "-" +
-					((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1)),(int)(Math.random() * 999 + 1),LocalDate.now(), LocalDate.now().plusYears(5));
+					CardTypes.CREDIT, CardColors.SILVER, CardUtils.getCardNumber(), CardUtils.getCardCvv(), LocalDate.now(), LocalDate.now().plusYears(5));
 			client02.addCards(card03);
 			serviceCard.save(card03);
 
-			 */
+*/
 		});
 		/* --- */
 	}

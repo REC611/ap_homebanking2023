@@ -28,6 +28,9 @@ public class WebAuthorization {
                         "/api/clients/current",
                         "/api/clients/current/accounts",
                         "/api/clients/current/cards","/api/loans").hasAuthority("CLIENT")
+                .antMatchers(HttpMethod.DELETE,
+                        "/api/accounts/**",
+                        "/api/clients/current/cards/**").hasAuthority("CLIENT")
                 .antMatchers(HttpMethod.POST,
                         "/api/clients/current/accounts",
                         "/api/clients/current/cards","/api/clients/current/transactions", "api/loans/").hasAuthority("CLIENT")

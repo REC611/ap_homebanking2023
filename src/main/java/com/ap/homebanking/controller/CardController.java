@@ -9,6 +9,7 @@ import com.ap.homebanking.repository.CardRepository;
 import com.ap.homebanking.repository.ClientRepository;
 import com.ap.homebanking.services.ServiceCard;
 import com.ap.homebanking.services.ServiceClient;
+import com.ap.homebanking.utils.CardUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,14 +39,10 @@ public class CardController {
 
             Card card = new Card(
                     (client.getFirstName() + " " + client.getLastName()), cardTypes, cardColors,
-                    ((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1)) + "-" +
-                            ((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1)),
-                    (int)(Math.random() * 999 + 1), LocalDate.now(), LocalDate.now().plusYears(5));
+                    CardUtils.getCardNumber(),  CardUtils.getCardCvv(),
+                    LocalDate.now(), LocalDate.now().plusYears(5));
             while (serviceCard.findByNumber(card.getNumber()) != null){
-                card.setNumber(
-                        ((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1)) + "-" +
-                                ((int)(Math.random() * 9999 + 1)) + "-" + ((int)(Math.random() * 9999 + 1))
-                );
+                card.setNumber( CardUtils.getCardNumber());
             }
             client.addCards(card);
             serviceCard.save(card);
@@ -58,5 +55,15 @@ public class CardController {
     public List<DtoCard> readCards (Authentication authentication){
         Client client= serviceClient.findByEmail(authentication.getName());
         return serviceCard.findByClientToCardDTO(client);
+    }
+    @RequestMapping(value = "/clients/current/cards/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Object> deleteCard(@PathVariable Long id){
+        if (serviceCard.findById(id) != null){
+            serviceCard.deleteCard(id);
+            return new ResponseEntity<>(HttpStatus.PROCESSING);
+        }else {
+            return new ResponseEntity<>("The card to be deleted does not exist", HttpStatus.FORBIDDEN);
+        }
+
     }
 }

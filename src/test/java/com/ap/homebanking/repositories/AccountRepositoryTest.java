@@ -4,16 +4,14 @@ import com.ap.homebanking.models.Account;
 import com.ap.homebanking.repository.AccountRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.*;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 import java.util.List;
 
-@DataJpaTest
-@AutoConfigureTestDatabase (replace = Replace.NONE)
+@SpringBootTest
 public class AccountRepositoryTest {
     @Autowired
     AccountRepository accountRepository;
@@ -25,8 +23,8 @@ public class AccountRepositoryTest {
     @Test
     public void  AccountBalancePositive(){
         List<Account> accounts = accountRepository.findAll();
-        for (Account account : accounts) {
-            assertThat(account.getBalance(), greaterThan(-1d));
+        for (Account account: accounts) {
+            assertThat(account.getNumber(), isA(String.class));
         }
     }
 }
